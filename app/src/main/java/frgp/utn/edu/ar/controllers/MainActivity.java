@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import OpenHelper.OpenHelper;
 import frgp.utn.edu.ar.DAOImpl.UsuarioDAOImpl;
+import frgp.utn.edu.ar.OpenHelper.OpenHelper;
 import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.Usuario;
 

@@ -2,7 +2,7 @@ package frgp.utn.edu.ar.DAO;
 
 import java.util.ArrayList;
 
-import OpenHelper.OpenHelper;
+import frgp.utn.edu.ar.OpenHelper.OpenHelper;
 import frgp.utn.edu.ar.entidades.Usuario;
 
 public interface UsuarioDAO {

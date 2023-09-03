@@ -4,8 +4,8 @@ import android.content.ContentValues;
 
 import java.util.ArrayList;
 
-import OpenHelper.OpenHelper;
 import frgp.utn.edu.ar.DAO.UsuarioDAO;
+import frgp.utn.edu.ar.OpenHelper.OpenHelper;
 import frgp.utn.edu.ar.entidades.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO {

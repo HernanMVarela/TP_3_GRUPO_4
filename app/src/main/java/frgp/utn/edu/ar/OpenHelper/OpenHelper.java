@@ -1,4 +1,4 @@
-package OpenHelper;
+package frgp.utn.edu.ar.OpenHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
