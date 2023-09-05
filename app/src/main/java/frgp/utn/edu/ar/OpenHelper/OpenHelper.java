@@ -32,4 +32,7 @@ public class OpenHelper extends SQLiteOpenHelper {
     public void insertDB (String nom, ContentValues val){
         this.getWritableDatabase().insert(nom,null,val);
     }
+
+    public void readDB (){
+    }
 }

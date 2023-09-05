@@ -1,17 +1,26 @@
 package frgp.utn.edu.ar.DAOImpl;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import frgp.utn.edu.ar.DAO.UsuarioDAO;
 import frgp.utn.edu.ar.OpenHelper.OpenHelper;
+import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
+
+    private OpenHelper DB;
+
     @Override
-    public boolean insertarUsuario(OpenHelper DB, Usuario nuevo) {
+    public boolean insertarUsuario(Context context, Usuario nuevo) {
         try {
+            DB = new OpenHelper( context, "tp3g4",null,1);
             DB.openDB();
             ContentValues user = new ContentValues();
             user.put("Username", nuevo.getUsername());
@@ -38,8 +47,29 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     }
 
     @Override
-    public ArrayList<Usuario> obtenerUsuarios() {
-        return null;
+    public List<Usuario> obtenerUsuarios(Context context) {
+
+        List<Usuario> listaUsers = new ArrayList<Usuario>();
+        DB = new OpenHelper( context, "tp3g4",null,1);
+        DB.openDB();
+        SQLiteDatabase base = DB.getWritableDatabase();
+
+        Cursor fila = base.rawQuery("SELECT * FROM usuarios", null);
+        if (fila.moveToFirst()) {
+            do {
+                // on below line we are adding the data from
+                // cursor to our array list.
+                listaUsers.add(new Usuario(
+                        fila.getInt(0),
+                        fila.getString(1),
+                        fila.getString(2),
+                        fila.getString(3),
+                        new EstadoUsuario(fila.getInt(4),"")));
+            } while (fila.moveToNext());
+            return listaUsers;
+        }else {
+            return null;
+        }
     }
 
     @Override
