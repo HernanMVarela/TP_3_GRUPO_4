@@ -1,43 +1,63 @@
 package frgp.utn.edu.ar.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import java.util.List;
-
-import frgp.utn.edu.ar.DAOImpl.UsuarioDAOImpl;
-import frgp.utn.edu.ar.entidades.EstadoUsuario;
-import frgp.utn.edu.ar.entidades.Usuario;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    UsuarioDAOImpl DaoUs = new UsuarioDAOImpl();
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUpToolbar();
 
-    }
-    public void escribir(View view){
-        EstadoUsuario Euser = new EstadoUsuario(1,"Activo");
-        Usuario nuevo = new Usuario(1,"UserPrueba","ContraPrueba","Prueba@Prueba.com",Euser);
-        boolean N = DaoUs.insertarUsuario(this, nuevo);
-    }
-
-    public void leerUsuario(View view){
-        List<Usuario> lista = DaoUs.obtenerUsuarios(this);
-
-        if (lista != null){
-            for (Usuario item: lista ) {
-                Log.i(String.valueOf(item.getId()),item.toString());
+        navigationView = (NavigationView) findViewById(R.id.navigation_menu);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if(id==R.id.nav_home){
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                if(id==R.id.nav_registro){
+                    Intent intent2 = new Intent(MainActivity.this , RegistroActivity.class);
+                    startActivity(intent2);
+                }
+                if(id==R.id.nav_login){
+                    Intent intent3 = new Intent(MainActivity.this , LoginActivity.class);
+                    startActivity(intent3);
+                }
+                if(id==R.id.nav_Parqueos){
+                    /// AGREGAR NAVEGACION A PARQUEO
+                }
+               return false;
             }
-        }else{
-            Log.e("ERROR","NO SE ENCONTRÓ USUARIO");
-        }
+        });
+    }
+
+    public void setUpToolbar() {
+        drawerLayout = findViewById(R.id.drawerLayout);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+        actionBarDrawerToggle.syncState();
+
     }
 
 }
