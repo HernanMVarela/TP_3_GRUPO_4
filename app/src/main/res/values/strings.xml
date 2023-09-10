@@ -15,5 +15,7 @@
     <string name="parqueos">Parqueos</string>
     <string name="parking_control">Parking Control</string>
     <string name="usuario">Usuario</string>
+    <string name="mi_cuenta">Mi Cuenta</string>
     <string name="usuario_mail_com">usuario@mail.com</string>
+    <string name="logout">Cerrar Sesion</string>
 </resources>

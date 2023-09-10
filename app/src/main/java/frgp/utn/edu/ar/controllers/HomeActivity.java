@@ -1,8 +1,11 @@
 package frgp.utn.edu.ar.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,36 +21,48 @@ public class HomeActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
+    TextView tvUserName, tvEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setUpToolbar();
 
+        String userName = getIntent().getStringExtra("userName");
+        String email = getIntent().getStringExtra("email");
+
         navigationView = (NavigationView) findViewById(R.id.navigation_menu);
+        View headerView = navigationView.getHeaderView(0);
+        tvUserName = (TextView) headerView.findViewById(R.id.textUser);
+        tvEmail = (TextView) headerView.findViewById(R.id.textMail);
+        tvUserName.setText(userName);
+        tvEmail.setText(email);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
 
-                if(id==R.id.nav_home){
-                    Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                if(id==R.id.nav_Parqueos){
+                    Intent intent = new Intent(HomeActivity.this, ParqueosActivity.class);
                     startActivity(intent);
                 }
-                if(id==R.id.nav_registro){
-                    Intent intent2 = new Intent(HomeActivity.this , RegistroActivity.class);
-                    startActivity(intent2);
+                if(id==R.id.nav_user){
+                    Intent intent = new Intent(HomeActivity.this, UserActivity.class);
+                    startActivity(intent);
                 }
-                if(id==R.id.nav_login){
-                    Intent intent3 = new Intent(HomeActivity.this , MainActivity.class);
-                    startActivity(intent3);
-                }
-                if(id==R.id.nav_Parqueos){
-                    /// AGREGAR NAVEGACION A PARQUEO
+                if(id==R.id.nav_logout){
+                    CerrarSesion();
                 }
                return false;
             }
         });
+    }
+
+    public void CerrarSesion(){
+        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void setUpToolbar() {

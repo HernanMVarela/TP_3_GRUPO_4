@@ -36,12 +36,15 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        if(DaoUs.existeUsuario(this, et1, et2) == null){
+        Usuario user = DaoUs.existeUsuario(this, et1, et2);
+        if(user == null){
             Toast.makeText(this, "Usuario o Contraseña incorrectos", Toast.LENGTH_LONG).show();
             return false;
         }
         else{
             Intent home = new Intent(this, HomeActivity.class);
+            home.putExtra("userName", user.getUsername());
+            home.putExtra("email", user.getCorreo());
             startActivity(home);
             return true;
         }
