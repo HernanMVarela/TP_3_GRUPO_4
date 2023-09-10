@@ -6,4 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ParqueosActivity">
 
+    <Button
+        android:id="@+id/addParqueoBtn"
+        android:layout_width="68dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="34dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/add" />
 </androidx.constraintlayout.widget.ConstraintLayout>

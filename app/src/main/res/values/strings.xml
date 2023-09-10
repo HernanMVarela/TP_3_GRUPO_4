@@ -18,4 +18,5 @@
     <string name="mi_cuenta">Mi Cuenta</string>
     <string name="usuario_mail_com">usuario@mail.com</string>
     <string name="logout">Cerrar Sesion</string>
+    <string name="add">+</string>
 </resources>
