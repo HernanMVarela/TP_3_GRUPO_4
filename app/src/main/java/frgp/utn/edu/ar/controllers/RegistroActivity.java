@@ -2,7 +2,9 @@ package frgp.utn.edu.ar.controllers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -15,36 +17,81 @@ import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.Usuario;
 
 public class RegistroActivity extends AppCompatActivity {
-    public EditText etNombre, etCorreo, etPassword1, etPassword2;
+    public EditText etUser, etCorreo, etPassword1, etPassword2;
     UsuarioDAOImpl DaoUs = new UsuarioDAOImpl();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-        etNombre = (EditText) findViewById(R.id.etNombreRegistro);
+        etUser = (EditText) findViewById(R.id.etNombreRegistro);
         etCorreo = (EditText) findViewById(R.id.etCorreoRegistro);
         etPassword1 = (EditText) findViewById(R.id.etPassUnoRegistro);
         etPassword2 = (EditText) findViewById(R.id.etPassDosRegistro);
     }
 
-    public void Registrar(View view){
-        String strNombre = etNombre.getText().toString();
-        String strCorreo = etCorreo.getText().toString();
-        String strPassUno = etPassword1.getText().toString();
-        String strPassDos = etPassword2.getText().toString();
+    public Boolean Registrar(View view){
 
-        if(strNombre.length() == 0 || strCorreo.length() == 0 || strPassUno.length() == 0 || strPassDos.length() == 0){
-            Toast.makeText(this, "Todos los campos son Obligatorios", Toast.LENGTH_LONG).show();
+        String userName = etUser.getText().toString();
+        ///validate that userName doesnt contain whitespaces
+        if(userName.contains(" ")){
+            Toast.makeText(this, "El nombre de usuario no puede contener espacios", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(etUser.getText().toString().isEmpty()
+        || etCorreo.getText().toString().isEmpty()
+        || etPassword1.getText().toString().isEmpty()
+        || etPassword2.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(!etCorreo.getText().toString().contains("@")){
+            Toast.makeText(this, "Ingrese una direccion de mail valida", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(etPassword1.getText().toString().length() < 6 || etPassword2.getText().toString().length() < 6){
+            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(!etPassword1.getText().toString().equals(etPassword2.getText().toString())){
+            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(!checkUserName(view)){
+            return false;
+        }
+
+        escribir(etUser.getText().toString(),etPassword1.getText().toString(),etCorreo.getText().toString());
+        return true;
+    }
+
+    public void escribir( String userName, String password, String correo){
+        EstadoUsuario eUser = new EstadoUsuario(1,"Activo");
+        Usuario nuevo = new Usuario(1,userName,password,correo,eUser);
+        boolean response = DaoUs.insertarUsuario(this, nuevo);
+        if (response){
+            Toast.makeText(this, "Usuario creado correctamente", Toast.LENGTH_LONG).show();
+            Intent login = new Intent(this, MainActivity.class);
+            startActivity(login);
         }else{
-            Toast.makeText(this, "Procesando...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error al crear usuario", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void escribir(View view){
-        EstadoUsuario Euser = new EstadoUsuario(1,"Activo");
-        Usuario nuevo = new Usuario(1,"UserPrueba","ContraPrueba","Prueba@Prueba.com",Euser);
-        boolean N = DaoUs.insertarUsuario(this, nuevo);
+
+    public boolean checkUserName(View view){
+        String userName = etUser.getText().toString();
+        if(DaoUs.obtenerUsuarioPorUsername(this, userName) != null){
+            Toast.makeText(this, "El nombre de usuario ya existe", Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public void leerUsuario(View view){

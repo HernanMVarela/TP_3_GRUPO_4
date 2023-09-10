@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void InisiarSesion(View view){
+    public void IniciarSesion(View view){
         String et1 = etNombre.getText().toString();
         String et2 = etPassword.getText().toString();
 

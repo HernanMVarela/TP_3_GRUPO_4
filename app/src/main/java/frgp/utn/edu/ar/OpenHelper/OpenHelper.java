@@ -34,5 +34,6 @@ public class OpenHelper extends SQLiteOpenHelper {
     }
 
     public void readDB (){
+        this.getReadableDatabase();
     }
 }

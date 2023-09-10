@@ -37,9 +37,33 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     }
 
     @Override
-    public Usuario obtenerUsuarioPorUsername(String username) {
-        return null;
+    public Usuario obtenerUsuarioPorUsername(Context context, String username) {
+        try {
+            DB = new OpenHelper( context, "tp3g4",null,1);
+            DB.openDB();
+            SQLiteDatabase base = DB.getWritableDatabase();
+            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username = " + username, null);
+            if (fila.moveToFirst()) {
+                Usuario user = new Usuario(
+                        fila.getInt(0),
+                        fila.getString(1),
+                        fila.getString(2),
+                        fila.getString(3),
+                        new EstadoUsuario(fila.getInt(3),""));
+                DB.closeDB();
+                return user;
+            }else {
+                DB.closeDB();
+                return null;
+            }
+        }
+        catch (Exception e) {
+            DB.closeDB();
+            return null;
+        }
     }
+
+
 
     @Override
     public boolean existeUsuario(String correo) {
