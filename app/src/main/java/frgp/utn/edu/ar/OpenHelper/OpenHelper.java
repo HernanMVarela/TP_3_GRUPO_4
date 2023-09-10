@@ -14,8 +14,11 @@ public class OpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "create table usuarios (_ID integer primary key autoincrement, Username text, Password text, Correo text, Estado integer);";
-        db.execSQL(query);
+        String tablaUsuarios = "create table usuarios (ID integer primary key autoincrement, USERNAME text unique, PASSWORD text, CORREO text unique, ESTADO integer);";
+        String tablaParqueos = "create table parqueos (ID integer primary key autoincrement, PATENTE text, TIEMPO Date);";
+
+        db.execSQL(tablaUsuarios);
+        db.execSQL(tablaParqueos);
     }
 
     @Override

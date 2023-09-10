@@ -42,18 +42,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             DB = new OpenHelper( context, "tp3g4",null,1);
             DB.openDB();
             SQLiteDatabase base = DB.getWritableDatabase();
+
             Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username =?", new String [] {username});
             if (fila.moveToFirst()) {
 
-                    Usuario user = new Usuario(
-                            fila.getInt(0),
-                            fila.getString(1),
-                            fila.getString(2),
-                            fila.getString(3),
-                            new EstadoUsuario(fila.getInt(3), ""));
-                    DB.closeDB();
-                    return user;
-
+                Usuario user = new Usuario(
+                        fila.getInt(0),
+                        fila.getString(1),
+                        fila.getString(2),
+                        fila.getString(3),
+                        new EstadoUsuario(fila.getInt(3), ""));
+                DB.closeDB();
+                return user;
             }else {
                 DB.closeDB();
                 return null;
@@ -96,26 +96,30 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public List<Usuario> obtenerUsuarios(Context context) {
-
         List<Usuario> listaUsers = new ArrayList<Usuario>();
-        DB = new OpenHelper( context, "tp3g4",null,1);
-        DB.openDB();
-        SQLiteDatabase base = DB.getWritableDatabase();
+        try {
+            DB = new OpenHelper( context, "tp3g4",null,1);
+            DB.openDB();
+            SQLiteDatabase base = DB.getWritableDatabase();
 
-        Cursor fila = base.rawQuery("SELECT * FROM usuarios", null);
-        if (fila.moveToFirst()) {
-            do {
-                // on below line we are adding the data from
-                // cursor to our array list.
-                listaUsers.add(new Usuario(
-                        fila.getInt(0),
-                        fila.getString(1),
-                        fila.getString(2),
-                        fila.getString(3),
-                        new EstadoUsuario(fila.getInt(4),"")));
-            } while (fila.moveToNext());
-            return listaUsers;
-        }else {
+            Cursor fila = base.rawQuery("SELECT * FROM usuarios", null);
+            if (fila.moveToFirst()) {
+                do {
+                    // on below line we are adding the data from
+                    // cursor to our array list.
+                    listaUsers.add(new Usuario(
+                            fila.getInt(0),
+                            fila.getString(1),
+                            fila.getString(2),
+                            fila.getString(3),
+                            new EstadoUsuario(fila.getInt(4),"")));
+                } while (fila.moveToNext());
+                return listaUsers;
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            DB.closeDB();
             return null;
         }
     }

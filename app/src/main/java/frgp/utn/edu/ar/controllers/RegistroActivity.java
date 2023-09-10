@@ -12,13 +12,14 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import frgp.utn.edu.ar.DAO.UsuarioDAO;
 import frgp.utn.edu.ar.DAOImpl.UsuarioDAOImpl;
 import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.Usuario;
 
 public class RegistroActivity extends AppCompatActivity {
     public EditText etUser, etCorreo, etPassword1, etPassword2;
-    UsuarioDAOImpl DaoUs = new UsuarioDAOImpl();
+    UsuarioDAO DaoUs = new UsuarioDAOImpl();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

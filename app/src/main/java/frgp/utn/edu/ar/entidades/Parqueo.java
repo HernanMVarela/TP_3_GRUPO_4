@@ -6,21 +6,21 @@ import java.util.Calendar;
 public class Parqueo {
     private int id;
     private String patente;
-    private Calendar tiempo;
+    private int tiempo;
 
     public Parqueo() {
     }
 
-    public Parqueo(int id, String patente, Calendar tiempo) {
+    public Parqueo(int id, String patente, int tiempo) {
         this.id = id;
         this.patente = patente;
         this.tiempo = tiempo;
     }
 
-    public void getTiempoFromInt(int minutos){
-        tiempo.set(Calendar.HOUR,minutos%60);
-        tiempo.set(Calendar.MINUTE,(minutos - (minutos%60)*60));
-        tiempo.set(Calendar.SECOND,0);
+    public Parqueo(String patente, int minutos) {
+        this.patente = patente;
+        this.tiempo = minutos;
+
     }
 
     public int getId() {
@@ -39,11 +39,11 @@ public class Parqueo {
         this.patente = patente;
     }
 
-    public Calendar getTiempo() {
+    public int getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(Calendar tiempo) {
+    public void setTiempo(int tiempo) {
         this.tiempo = tiempo;
     }
 }
