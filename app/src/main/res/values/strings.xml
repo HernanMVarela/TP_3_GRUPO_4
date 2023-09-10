@@ -18,5 +18,9 @@
     <string name="mi_cuenta">Mi Cuenta</string>
     <string name="usuario_mail_com">usuario@mail.com</string>
     <string name="logout">Cerrar Sesion</string>
-    <string name="add">+</string>
+    <string name="RegistrarParqueo">Registrar parqueo</string>
+    <string name="NumMatricula">Nro de Matricula</string>
+    <string name="Tiempo">Tiempo</string>
+    <string name="Registrar">Registrar</string>
+    <string name="Cancelar">Cancelar</string>
 </resources>
