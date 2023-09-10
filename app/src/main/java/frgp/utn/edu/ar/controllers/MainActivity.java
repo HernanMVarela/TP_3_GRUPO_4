@@ -1,63 +1,42 @@
 package frgp.utn.edu.ar.controllers;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.google.android.material.navigation.NavigationView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    NavigationView navigationView;
+    public EditText etNombre, etPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setUpToolbar();
 
-        navigationView = (NavigationView) findViewById(R.id.navigation_menu);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                if(id==R.id.nav_home){
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-                if(id==R.id.nav_registro){
-                    Intent intent2 = new Intent(MainActivity.this , RegistroActivity.class);
-                    startActivity(intent2);
-                }
-                if(id==R.id.nav_login){
-                    Intent intent3 = new Intent(MainActivity.this , LoginActivity.class);
-                    startActivity(intent3);
-                }
-                if(id==R.id.nav_Parqueos){
-                    /// AGREGAR NAVEGACION A PARQUEO
-                }
-               return false;
-            }
-        });
+        etNombre = (EditText) findViewById(R.id.etNombre);
+        etPassword = (EditText) findViewById(R.id.etPassword);
     }
 
-    public void setUpToolbar() {
-        drawerLayout = findViewById(R.id.drawerLayout);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
-        actionBarDrawerToggle.syncState();
 
+    public void InisiarSesion(View view){
+        String et1 = etNombre.getText().toString();
+        String et2 = etPassword.getText().toString();
+
+        if(et1.length() == 0 || et2.length() == 0){
+            Toast.makeText(this, "Todos los campos son Obligatorios", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "Procesando...", Toast.LENGTH_LONG).show();
+        }
     }
+
+    public void IrRegistro(View view){
+        Intent registro = new Intent(this, RegistroActivity.class);
+        startActivity(registro);
+    }
+
 
 }
