@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
+
                 if(id==R.id.nav_home){
                     Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
                     startActivity(intent);

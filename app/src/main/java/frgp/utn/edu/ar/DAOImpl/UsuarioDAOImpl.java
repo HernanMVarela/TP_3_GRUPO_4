@@ -42,16 +42,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             DB = new OpenHelper( context, "tp3g4",null,1);
             DB.openDB();
             SQLiteDatabase base = DB.getWritableDatabase();
-            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username = " + username, null);
+            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username =?", new String [] {username});
             if (fila.moveToFirst()) {
-                Usuario user = new Usuario(
-                        fila.getInt(0),
-                        fila.getString(1),
-                        fila.getString(2),
-                        fila.getString(3),
-                        new EstadoUsuario(fila.getInt(3),""));
-                DB.closeDB();
-                return user;
+
+                    Usuario user = new Usuario(
+                            fila.getInt(0),
+                            fila.getString(1),
+                            fila.getString(2),
+                            fila.getString(3),
+                            new EstadoUsuario(fila.getInt(3), ""));
+                    DB.closeDB();
+                    return user;
+
             }else {
                 DB.closeDB();
                 return null;
@@ -63,11 +65,33 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         }
     }
 
-
-
     @Override
-    public boolean existeUsuario(String correo) {
-        return false;
+    public Usuario existeUsuario(Context context, String username, String password) {
+        try {
+            DB = new OpenHelper(context, "tp3g4", null, 1);
+            DB.openDB();
+            SQLiteDatabase base = DB.getWritableDatabase();
+            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username =? AND Password = ?", new String [] {username, password});
+            if (fila.moveToFirst()) {
+
+                    Usuario user = new Usuario(
+                            fila.getInt(0),
+                            fila.getString(1),
+                            fila.getString(2),
+                            fila.getString(3),
+                            new EstadoUsuario(fila.getInt(3), ""));
+                    DB.closeDB();
+                    return user;
+
+            } else {
+                DB.closeDB();
+                return null;
+            }
+        }
+        catch (Exception e) {
+            DB.closeDB();
+            return null;
+        }
     }
 
     @Override
