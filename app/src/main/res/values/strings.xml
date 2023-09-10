@@ -23,4 +23,6 @@
     <string name="Tiempo">Tiempo</string>
     <string name="Registrar">Registrar</string>
     <string name="Cancelar">Cancelar</string>
+    <string name="add">+</string>
+    <string name="List">Listar</string>
 </resources>

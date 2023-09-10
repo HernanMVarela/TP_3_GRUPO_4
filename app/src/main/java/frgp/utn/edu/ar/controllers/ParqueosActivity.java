@@ -17,23 +17,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.List;
 
 import frgp.utn.edu.ar.DAO.ParqueoDAO;
 import frgp.utn.edu.ar.DAOImpl.ParqueoDAOImpl;
 import frgp.utn.edu.ar.DAOImpl.UsuarioDAOImpl;
 import frgp.utn.edu.ar.entidades.Parqueo;
+import frgp.utn.edu.ar.negocio.IParqueoNegocio;
+import frgp.utn.edu.ar.negocioImpl.ParqueoNegocio;
 
 public class ParqueosActivity extends AppCompatActivity {
 
     private Button addParqueo;
-    ParqueoDAO DaoPar = new ParqueoDAOImpl();
+    IParqueoNegocio ParNeg = new ParqueoNegocio();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parqueos);
-
         addParqueo = (Button) findViewById(R.id.addParqueoBtn);
+
+        listarParqueos();
         addParqueo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { showCustomDialog();
                 /*AlertDialog alertDialog = new AlertDialog.Builder(ParqueosActivity.this).create(); //Read Update
@@ -80,7 +84,7 @@ public class ParqueosActivity extends AppCompatActivity {
                 Toast.makeText(ParqueosActivity.this, matricula.getText().toString() + " & " + tiempo.getText().toString(), Toast.LENGTH_LONG).show();
                 if(matricula.getText().toString()!=null&&tiempo.getText().toString()!=null)
                 {
-                    Parqueo parq = new Parqueo(matricula.getText().toString(),Integer.parseInt(tiempo.getText().toString()));
+                    Parqueo parq = new Parqueo(matricula.getText().toString(),Integer.parseInt(tiempo.getText().toString()), Calendar.getInstance().getTime());
                     if(escribirDB(parq))
                     {
                         Toast.makeText(ParqueosActivity.this, "Registrado", Toast.LENGTH_LONG).show();
@@ -98,18 +102,22 @@ public class ParqueosActivity extends AppCompatActivity {
     }
 
     private boolean escribirDB(Parqueo nuevo){
-        return DaoPar.insertarParqueo(this,nuevo);
+        return ParNeg.guardarParqueo(this,nuevo);
     }
 
     private void listarParqueos(){
-        List<Parqueo> listado = DaoPar.listarParqueos(this);
-        for (Parqueo park: listado) {
-            Log.i("Parqueo Listado " + park.getId(), "Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo());
+        List<Parqueo> listado = ParNeg.listarParqueos(this);
+        if(listado!=null) {
+            for (Parqueo park : listado) {
+                Log.i("Parqueo Listado " + park.getId(), park.toString());
+            }
+        } else{
+            Log.e("SIN DATOS", "NO HAY DATOS EN LA DB");
         }
     }
 
     private void buscarParqueo(String patente){
-        Parqueo buscar = DaoPar.obtenerParqueo(this, patente);
+        Parqueo buscar = ParNeg.buscarPorPatente(this, patente);
         Log.i("Parqueo Buscado " + buscar.getId(), "Patente: " + buscar.getPatente() + " | Tiempo: " + buscar.getTiempo());
 
     }
