@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.controllers;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -45,12 +46,19 @@ public class HomeActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
 
                 if(id==R.id.nav_Parqueos){
-                    Intent intent = new Intent(HomeActivity.this, ParqueosActivity.class);
-                    startActivity(intent);
+                    Intent parqueos = new Intent(HomeActivity.this, ParqueosActivity.class);
+                    parqueos.putExtra("userName", userName);
+                    startActivity(parqueos);
                 }
                 if(id==R.id.nav_user){
-                    Intent intent = new Intent(HomeActivity.this, UserActivity.class);
-                    startActivity(intent);
+                    //open modal on click
+                    AlertDialog.Builder contact = new AlertDialog.Builder(HomeActivity.this);
+                    contact.setTitle("INFORMACION DEL USUARIO");
+                    contact.setMessage("Nombre de Usuario: " + userName + "\n" + "Email: " + email + "\n" + "Contraseña: " + getIntent().getStringExtra("pass"));
+
+                    contact.setCancelable(false)
+                            .setPositiveButton("OK", null);
+                    contact.show();
                 }
                 if(id==R.id.nav_logout){
                     CerrarSesion();

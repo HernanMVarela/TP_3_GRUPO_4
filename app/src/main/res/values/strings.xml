@@ -25,4 +25,6 @@
     <string name="Cancelar">Cancelar</string>
     <string name="add">+</string>
     <string name="List">Listar</string>
+    <string name="parqueos_title">Parqueos de</string>
+    <string name="parqueos_user">User</string>
 </resources>

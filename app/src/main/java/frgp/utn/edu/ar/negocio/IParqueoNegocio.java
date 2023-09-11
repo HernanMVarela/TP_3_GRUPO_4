@@ -12,5 +12,6 @@ public interface IParqueoNegocio {
     public Parqueo buscarPorPatente(Context context, String patente);
     public boolean existePatente(Context context, String patente);
     public List<Parqueo> listarParqueos(Context context);
+    public List<Parqueo> listarParqueosPorUser(Context context, String user);
     public boolean eliminarParqueo(Context context, Parqueo eliminar);
 }

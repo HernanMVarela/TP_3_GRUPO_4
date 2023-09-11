@@ -13,10 +13,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,32 +34,25 @@ import frgp.utn.edu.ar.negocioImpl.ParqueoNegocio;
 public class ParqueosActivity extends AppCompatActivity {
 
     private Button addParqueo;
+    String user;
+    TextView tvUserName;
     IParqueoNegocio ParNeg = new ParqueoNegocio();
+    private List<String> parqueos = new ArrayList<>();
+
+    private ListView lvParqueos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parqueos);
         addParqueo = (Button) findViewById(R.id.addParqueoBtn);
-
+        tvUserName = (TextView) findViewById(R.id.textUserParqueos);
+        String userName = getIntent().getStringExtra("userName");
+        user = userName;
+        tvUserName.setText(userName);
         listarParqueos();
         addParqueo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { showCustomDialog();
-                /*AlertDialog alertDialog = new AlertDialog.Builder(ParqueosActivity.this).create(); //Read Update
-                alertDialog.setTitle("AGREGAR PARQUEO");
-                alertDialog.setMessage("Ingrese los datos del parqueo");
-                alertDialog.setButton("GUARDAR", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Parqueo nuevo = new Parqueo("ABC 123",45);
-                        if(escribirDB(nuevo)){
-                            listarParqueos();
-                            buscarParqueo(nuevo.getPatente());
-                        }else{
-                            Log.e("ERROR", "NO SE AGREGO PARQUEO A DB");
-                        }
-                    }
-                });
-
-                alertDialog.show();*/
             }
         });
     }
@@ -81,24 +78,28 @@ public class ParqueosActivity extends AppCompatActivity {
         registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ParqueosActivity.this, matricula.getText().toString() + " & " + tiempo.getText().toString(), Toast.LENGTH_LONG).show();
-                if(matricula.getText().toString()!=null&&tiempo.getText().toString()!=null)
+                if(!matricula.getText().toString().isEmpty() && !tiempo.getText().toString().isEmpty())
                 {
-                    Parqueo parq = new Parqueo(matricula.getText().toString(),Integer.parseInt(tiempo.getText().toString()), Calendar.getInstance().getTime());
+                    Parqueo parq = new Parqueo(matricula.getText().toString(),Integer.parseInt(tiempo.getText().toString()), Calendar.getInstance().getTime(), user);
                     if(escribirDB(parq))
                     {
                         Toast.makeText(ParqueosActivity.this, "Registrado", Toast.LENGTH_LONG).show();
+                        listarParqueos();
                     }
                     else
                     {
                         Toast.makeText(ParqueosActivity.this, "Error", Toast.LENGTH_LONG).show();
                     }
                 }
+                else {
+                    Toast.makeText(ParqueosActivity.this, "Debe completar todos los campos", Toast.LENGTH_LONG).show();
+                }
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+
     }
 
     private boolean escribirDB(Parqueo nuevo){
@@ -106,14 +107,35 @@ public class ParqueosActivity extends AppCompatActivity {
     }
 
     private void listarParqueos(){
-        List<Parqueo> listado = ParNeg.listarParqueos(this);
+
+        parqueos.clear();
+        lvParqueos = (ListView)findViewById(R.id.lvParqueos);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, parqueos);
+        lvParqueos.setAdapter(adapter);
+
+        List<Parqueo> listado = ParNeg.listarParqueosPorUser(this, user);
+        //show in console
+        Log.i("User", "Parqueos del usuario: " + user);
+
         if(listado!=null) {
             for (Parqueo park : listado) {
-                Log.i("Parqueo Listado " + park.getId(), park.toString());
+                Log.i("Parqueo " + park.getId(), "Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo() + " Minutos");
             }
         } else{
-            Log.e("SIN DATOS", "NO HAY DATOS EN LA DB");
+            Log.i("Parqueo ", "No tienes parqueos guardados.");
         }
+
+        if(listado!=null) {
+            for (Parqueo park : listado) {
+                parqueos.add("Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo()+ " Minutos");
+            }
+        } else{
+            parqueos.add("No tienes parqueos guardados.");
+        }
+
+        lvParqueos = (ListView)findViewById(R.id.lvParqueos);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, parqueos);
+        lvParqueos.setAdapter(adapter2);
     }
 
     private void buscarParqueo(String patente){

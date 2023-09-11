@@ -36,6 +36,11 @@ public class ParqueoNegocio implements IParqueoNegocio {
     }
 
     @Override
+    public List<Parqueo> listarParqueosPorUser(Context context, String user) {
+        return ParDao.listarParqueosPorUser(context, user);
+    }
+
+    @Override
     public boolean eliminarParqueo(Context context, Parqueo eliminar) {
         return false;
     }
