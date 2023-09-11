@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TP_3_GRUPO_4</string>
+    <string name="app_name">Parking Control</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -32,4 +32,13 @@
     <string name="registrarse">Registrarse</string>
     <string name="contrasena">Contraseña</string>
     <string name="nombre_de_usuario">Nombre de Usuario</string>
+    <string name="varela_hernan">Varela Hernán</string>
+    <string name="sinnott_segura_gonzalo">Sinnott Segura Gonzalo</string>
+    <string name="fernandez_leonardo">Fernandez Leonardo</string>
+    <string name="clifton_manuel">Clifton Manuel</string>
+    <string name="aceptar">ACEPTAR</string>
+    <string name="nombre">Nombre</string>
+    <string name="correo_electr_nico">Correo electrónico</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="repetir_contrase_a">Repetir Contraseña</string>
 </resources>

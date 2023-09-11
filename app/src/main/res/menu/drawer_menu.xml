@@ -3,7 +3,7 @@
     <group android:checkableBehavior="single"
         android:id="@+id/group1">
         <item android:id="@+id/nav_Parqueos"
-            android:icon="@drawable/ic_baseline_policy_24"
+            android:icon="@drawable/car_clock"
             android:title="@string/parqueos">
         </item>
         <item android:id="@+id/nav_user"

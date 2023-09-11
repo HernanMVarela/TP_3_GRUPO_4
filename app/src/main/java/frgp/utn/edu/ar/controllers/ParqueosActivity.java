@@ -1,15 +1,21 @@
 package frgp.utn.edu.ar.controllers;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -20,6 +26,8 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,9 +43,12 @@ import frgp.utn.edu.ar.negocioImpl.ParqueoNegocio;
 
 public class ParqueosActivity extends AppCompatActivity {
 
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    NavigationView navigationView;
     private Button addParqueo;
     private String user;
-    private TextView tvUserName;
+    private TextView tvUserName,tvEmail, textUserParqueos;
     private IParqueoNegocio ParNeg = new ParqueoNegocio();
     private List<String> parqueos = new ArrayList<>();
 
@@ -47,12 +58,59 @@ public class ParqueosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parqueos);
-        addParqueo = (Button) findViewById(R.id.addParqueoBtn);
-        tvUserName = (TextView) findViewById(R.id.textUserParqueos);
+        setUpToolbar();
+
         String userName = getIntent().getStringExtra("userName");
+        String email = getIntent().getStringExtra("email");
+        String password = getIntent().getStringExtra("pass");
+
+        // NAVBAR
+        navigationView = (NavigationView) findViewById(R.id.navigation_menu);
+        View headerView = navigationView.getHeaderView(0);
+
+        // CONTROLES DEL HEADER
+        tvUserName = (TextView) headerView.findViewById(R.id.textUser);
+        tvEmail = (TextView) headerView.findViewById(R.id.textMail);
+        tvEmail.setText(email);
+        tvUserName.setText(userName);
+
+        // CONTROLES DEL LAYOUT
+        addParqueo = (Button) findViewById(R.id.addParqueoBtn);
+        textUserParqueos = (TextView) findViewById(R.id.textUserParqueos);
         user = userName;
-        tvUserName.setText("Parqueos de " + userName);
+        textUserParqueos.setText("Parqueos de " + userName);
         listarParqueos();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+
+                if(id==R.id.nav_Parqueos){
+                    Intent parqueos = new Intent(ParqueosActivity.this, ParqueosActivity.class);
+                    parqueos.putExtra("userName", userName);
+                    parqueos.putExtra("email", email);
+                    parqueos.putExtra("pass", password);
+                    startActivity(parqueos);
+                }
+                if(id==R.id.nav_user){
+                    //open modal on click
+                    AlertDialog.Builder contact = new AlertDialog.Builder(ParqueosActivity.this);
+                    contact.setTitle("INFORMACION DEL USUARIO");
+                    contact.setMessage("Nombre de Usuario: " + userName + "\n" + "Email: " + email + "\n" + "Contraseña: " + password);
+
+                    contact.setCancelable(false)
+                            .setPositiveButton("OK", null);
+                    contact.show();
+                }
+                if(id==R.id.nav_logout){
+                    CerrarSesion();
+                }
+                return false;
+            }
+        });
+
         addParqueo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { showCustomDialog();
             }
@@ -102,6 +160,8 @@ public class ParqueosActivity extends AppCompatActivity {
 
         dialog.show();
 
+
+
     }
 
     private boolean escribirDB(Parqueo nuevo){
@@ -116,7 +176,6 @@ public class ParqueosActivity extends AppCompatActivity {
 
         if(listado!=null) {
             for (Parqueo park : listado) {
-                Log.i("Parqueo " + park.getId(), "Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo() + " Minutos");
                 parqueos.add("Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo()+ " Minutos");
                 ParqueoAdapter adapter = new ParqueoAdapter(this,listado);
                 gvParqueos = (GridView) findViewById(R.id.gvParqueos);
@@ -128,9 +187,22 @@ public class ParqueosActivity extends AppCompatActivity {
         }
     }
 
-    private void buscarParqueo(String patente){
-        Parqueo buscar = ParNeg.buscarPorPatente(this, patente);
-        Log.i("Parqueo Buscado " + buscar.getId(), "Patente: " + buscar.getPatente() + " | Tiempo: " + buscar.getTiempo());
+    public void CerrarSesion(){
+        Intent intent = new Intent(ParqueosActivity.this, MainActivity.class);
+        intent.putExtra("userName", "");
+        intent.putExtra("email", "");
+        intent.putExtra("pass", "");
+        startActivity(intent);
+    }
+
+    public void setUpToolbar() {
+        drawerLayout = findViewById(R.id.drawerLayout);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
+        actionBarDrawerToggle.syncState();
 
     }
 

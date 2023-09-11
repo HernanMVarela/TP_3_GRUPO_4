@@ -10,6 +10,7 @@
     android:fitsSystemWindows="true"
     android:background="@color/backgroundColor"
     android:minWidth="19dp">
+
     <ScrollView
         android:layout_width="wrap_content"
         android:background="#F7FFFFFF"
@@ -20,15 +21,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#F7FFFFFF"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F7FFFFFF"
+                android:background="#45C5FF"
                 app:subtitleTextColor="#0A0A0A"
                 app:titleTextColor="#111111" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:padding="15dp"
+                android:text="@string/clifton_manuel"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:padding="15dp"
+                android:text="@string/fernandez_leonardo"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:padding="15dp"
+                android:text="@string/sinnott_segura_gonzalo"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:padding="15dp"
+                android:text="@string/varela_hernan"
+                android:textSize="28sp"
+                android:textAlignment="center" />
 
         </LinearLayout>
     </ScrollView>
@@ -40,6 +79,7 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
         app:menu="@menu/drawer_menu">
+
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

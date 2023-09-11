@@ -32,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
 
         String userName = getIntent().getStringExtra("userName");
         String email = getIntent().getStringExtra("email");
+        String password = getIntent().getStringExtra("pass");
 
         navigationView = (NavigationView) findViewById(R.id.navigation_menu);
         View headerView = navigationView.getHeaderView(0);
@@ -48,13 +49,15 @@ public class HomeActivity extends AppCompatActivity {
                 if(id==R.id.nav_Parqueos){
                     Intent parqueos = new Intent(HomeActivity.this, ParqueosActivity.class);
                     parqueos.putExtra("userName", userName);
+                    parqueos.putExtra("email", email);
+                    parqueos.putExtra("pass", password);
                     startActivity(parqueos);
                 }
                 if(id==R.id.nav_user){
                     //open modal on click
                     AlertDialog.Builder contact = new AlertDialog.Builder(HomeActivity.this);
                     contact.setTitle("INFORMACION DEL USUARIO");
-                    contact.setMessage("Nombre de Usuario: " + userName + "\n" + "Email: " + email + "\n" + "Contraseña: " + getIntent().getStringExtra("pass"));
+                    contact.setMessage("Nombre de Usuario: " + userName + "\n" + "Email: " + email + "\n" + "Contraseña: " + password);
 
                     contact.setCancelable(false)
                             .setPositiveButton("OK", null);
@@ -70,6 +73,9 @@ public class HomeActivity extends AppCompatActivity {
 
     public void CerrarSesion(){
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+        intent.putExtra("userName", "");
+        intent.putExtra("email", "");
+        intent.putExtra("pass", "");
         startActivity(intent);
     }
 
