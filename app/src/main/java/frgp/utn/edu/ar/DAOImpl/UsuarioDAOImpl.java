@@ -51,10 +51,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                         fila.getString(1),
                         fila.getString(2),
                         fila.getString(3),
-                        new EstadoUsuario(fila.getInt(3), ""));
+                        new EstadoUsuario(fila.getInt(4), ""));
+                fila.close();
                 DB.closeDB();
                 return user;
             }else {
+                fila.close();
                 DB.closeDB();
                 return null;
             }
@@ -66,12 +68,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     }
 
     @Override
-    public Usuario existeUsuario(Context context, String username, String password) {
+    public Usuario existeUsuario(Context context, String username) {
         try {
             DB = new OpenHelper(context, "tp3g4", null, 1);
             DB.openDB();
             SQLiteDatabase base = DB.getWritableDatabase();
-            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username =? AND Password = ?", new String [] {username, password});
+            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username =?", new String [] {username});
             if (fila.moveToFirst()) {
 
                     Usuario user = new Usuario(
@@ -80,10 +82,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                             fila.getString(2),
                             fila.getString(3),
                             new EstadoUsuario(fila.getInt(3), ""));
+                    fila.close();
                     DB.closeDB();
                     return user;
 
             } else {
+                fila.close();
                 DB.closeDB();
                 return null;
             }
@@ -96,7 +100,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public List<Usuario> obtenerUsuarios(Context context) {
-        List<Usuario> listaUsers = new ArrayList<Usuario>();
+        List<Usuario> listaUsers = new ArrayList<>();
         try {
             DB = new OpenHelper( context, "tp3g4",null,1);
             DB.openDB();
@@ -114,8 +118,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                             fila.getString(3),
                             new EstadoUsuario(fila.getInt(4),"")));
                 } while (fila.moveToNext());
+                fila.close();
                 return listaUsers;
             }else {
+                fila.close();
                 return null;
             }
         }catch (Exception e){

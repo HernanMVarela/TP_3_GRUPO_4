@@ -118,16 +118,14 @@ public class ParqueosActivity extends AppCompatActivity {
             for (Parqueo park : listado) {
                 Log.i("Parqueo " + park.getId(), "Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo() + " Minutos");
                 parqueos.add("Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo()+ " Minutos");
+                ParqueoAdapter adapter = new ParqueoAdapter(this,listado);
+                gvParqueos = (GridView) findViewById(R.id.gvParqueos);
+                gvParqueos.setAdapter(adapter);
             }
         } else{
             Log.i("Parqueo ", "No tienes parqueos guardados.");
             parqueos.add("No tienes parqueos guardados.");
         }
-
-        ParqueoAdapter adapter = new ParqueoAdapter(this,listado);
-        gvParqueos = (GridView) findViewById(R.id.gvParqueos);
-        gvParqueos.setAdapter(adapter);
-
     }
 
     private void buscarParqueo(String patente){

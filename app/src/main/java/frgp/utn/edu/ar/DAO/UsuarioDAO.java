@@ -9,7 +9,7 @@ import frgp.utn.edu.ar.entidades.Usuario;
 public interface UsuarioDAO {
     public boolean insertarUsuario(Context context, Usuario nuevo);
     public Usuario obtenerUsuarioPorUsername(Context context, String username);
-    public Usuario existeUsuario(Context context, String username, String password);
+    public Usuario existeUsuario(Context context, String username);
     public List<Usuario> obtenerUsuarios(Context context);
     public void eliminarUsuario(int ID);
     public boolean actualizarUsuario(Usuario modificar);

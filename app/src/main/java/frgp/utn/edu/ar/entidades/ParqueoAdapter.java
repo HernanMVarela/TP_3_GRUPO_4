@@ -23,12 +23,20 @@ public class ParqueoAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return elementos.size();
+        if(elementos != null) {
+            return elementos.size();
+        }else {
+            return 0;
+        }
     }
 
     @Override
     public Parqueo getItem(int position) {
-        return elementos.get(position);
+        if(elementos!=null) {
+            return elementos.get(position);
+        } else {
+            return null;
+        }
     }
 
     @Override

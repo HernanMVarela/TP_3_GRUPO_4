@@ -11,6 +11,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import frgp.utn.edu.ar.DAO.ParqueoDAO;
 import frgp.utn.edu.ar.OpenHelper.OpenHelper;
@@ -21,7 +22,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
     private OpenHelper DB;
     @Override
     public boolean insertarParqueo(Context context, Parqueo nuevo) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
         try {
             DB = new OpenHelper( context, "tp3g4",null,1);
@@ -49,7 +50,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
 
     @Override
     public List<Parqueo> listarParqueos(Context context) {
-        List<Parqueo> listaParqueos = new ArrayList<Parqueo>();
+        List<Parqueo> listaParqueos = new ArrayList<>();
         try {
             DB = new OpenHelper( context, "tp3g4",null,1);
             DB.openDB();
@@ -62,7 +63,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
                     String fechaStr = fila.getString(3);
 
                     // Convierte la cadena de fecha nuevamente a java.util.Date
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                     Date fechaIngreso = dateFormat.parse(fechaStr);
 
                     // Convierte la fecha de ingreso a Calendar
@@ -85,9 +86,11 @@ public class ParqueoDAOImpl implements ParqueoDAO {
                                 fila.getString(4)));
                     }
                 } while (fila.moveToNext());
+                fila.close();
                 DB.closeDB();
                 return listaParqueos;
             }else {
+                fila.close();
                 DB.closeDB();
                 return null;
             }
@@ -100,7 +103,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
 
     @Override
     public List<Parqueo> listarParqueosPorUser(Context context, String user) {
-        List<Parqueo> listaParqueos = new ArrayList<Parqueo>();
+        List<Parqueo> listaParqueos = new ArrayList<>();
         try {
             DB = new OpenHelper( context, "tp3g4",null,1);
             DB.openDB();
@@ -113,7 +116,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
                     String fechaStr = fila.getString(3);
 
                     // Convierte la cadena de fecha nuevamente a java.util.Date
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
                     Date fechaIngreso = dateFormat.parse(fechaStr);
 
                     // Convierte la fecha de ingreso a Calendar
@@ -136,9 +139,11 @@ public class ParqueoDAOImpl implements ParqueoDAO {
                                 fila.getString(4)));
                     }
                 } while (fila.moveToNext());
+                fila.close();
                 DB.closeDB();
                 return listaParqueos;
             }else {
+                fila.close();
                 DB.closeDB();
                 return null;
             }
@@ -161,7 +166,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
 
                 String fechaStr = fila.getString(3);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
                 java.util.Date fecha = dateFormat.parse(fechaStr);
 
                 buscado.setId(fila.getInt(0));
@@ -169,9 +174,11 @@ public class ParqueoDAOImpl implements ParqueoDAO {
                 buscado.setTiempo(fila.getInt(2));
                 buscado.setIngreso(fecha);
                 buscado.setUser(fila.getString(4));
+                fila.close();
                 DB.closeDB();
                 return buscado;
             }else {
+                fila.close();
                 DB.closeDB();
                 return null;
             }
@@ -193,7 +200,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
 
                 String fechaStr = fila.getString(3);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
                 java.util.Date fecha = dateFormat.parse(fechaStr);
 
                 buscado.setId(fila.getInt(0));
@@ -201,9 +208,11 @@ public class ParqueoDAOImpl implements ParqueoDAO {
                 buscado.setTiempo(fila.getInt(2));
                 buscado.setIngreso(fecha);
                 buscado.setUser(fila.getString(4));
+                fila.close();
                 DB.closeDB();
                 return buscado;
             }else {
+                fila.close();
                 DB.closeDB();
                 return null;
             }

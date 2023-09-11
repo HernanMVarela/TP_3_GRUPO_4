@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -16,10 +15,12 @@ import frgp.utn.edu.ar.DAO.UsuarioDAO;
 import frgp.utn.edu.ar.DAOImpl.UsuarioDAOImpl;
 import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.Usuario;
+import frgp.utn.edu.ar.negocio.IUsuarioNegocio;
+import frgp.utn.edu.ar.negocioImpl.UsuarioNegocio;
 
 public class RegistroActivity extends AppCompatActivity {
     public EditText etUser, etCorreo, etPassword1, etPassword2;
-    UsuarioDAO DaoUs = new UsuarioDAOImpl();
+    IUsuarioNegocio UserNeg = new UsuarioNegocio();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +75,7 @@ public class RegistroActivity extends AppCompatActivity {
     public void escribir( String userName, String password, String correo){
         EstadoUsuario eUser = new EstadoUsuario(1,"Activo");
         Usuario nuevo = new Usuario(1,userName,password,correo,eUser);
-        boolean response = DaoUs.insertarUsuario(this, nuevo);
+        boolean response = UserNeg.guardarUsuario(this, nuevo);
         if (response){
             Toast.makeText(this, "Usuario creado correctamente", Toast.LENGTH_LONG).show();
             Intent login = new Intent(this, MainActivity.class);
@@ -87,7 +88,7 @@ public class RegistroActivity extends AppCompatActivity {
 
     public boolean checkUserName(View view){
         String userName = etUser.getText().toString();
-        if(DaoUs.obtenerUsuarioPorUsername(this, userName) != null){
+        if(UserNeg.existeUsuario(this, userName)){
             Toast.makeText(this, "El nombre de usuario ya existe", Toast.LENGTH_LONG).show();
             return false;
         }else{
@@ -96,7 +97,7 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     public void leerUsuario(View view){
-        List<Usuario> lista = DaoUs.obtenerUsuarios(this);
+        List<Usuario> lista = UserNeg.listarUsuarios(this);
 
         if (lista != null){
             for (Usuario item: lista ) {

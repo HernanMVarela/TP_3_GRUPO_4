@@ -4,20 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.List;
-
-import frgp.utn.edu.ar.DAOImpl.UsuarioDAOImpl;
 import frgp.utn.edu.ar.entidades.Usuario;
+import frgp.utn.edu.ar.negocio.IUsuarioNegocio;
+import frgp.utn.edu.ar.negocioImpl.UsuarioNegocio;
 
 public class MainActivity extends AppCompatActivity {
 
     public EditText etNombre, etPassword;
-    UsuarioDAOImpl DaoUs = new UsuarioDAOImpl();
+    IUsuarioNegocio UserNeg = new UsuarioNegocio();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        Usuario user = DaoUs.existeUsuario(this, et1, et2);
+        Usuario user = UserNeg.cargarUsuario(this, et1, et2);
         if(user == null){
             Toast.makeText(this, "Usuario o Contraseña incorrectos", Toast.LENGTH_LONG).show();
             return false;
@@ -55,6 +53,5 @@ public class MainActivity extends AppCompatActivity {
         Intent registro = new Intent(this, RegistroActivity.class);
         startActivity(registro);
     }
-
 
 }
