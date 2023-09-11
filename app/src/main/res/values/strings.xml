@@ -27,4 +27,9 @@
     <string name="List">Listar</string>
     <string name="parqueos_title">Parqueos de</string>
     <string name="parqueos_user">User</string>
+    <string name="addParqueo">+</string>
+    <string name="iniciar_sesion">INICIAR SESIÓN</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="nombre_de_usuario">Nombre de Usuario</string>
 </resources>

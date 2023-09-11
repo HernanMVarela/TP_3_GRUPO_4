@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,18 +29,19 @@ import frgp.utn.edu.ar.DAO.ParqueoDAO;
 import frgp.utn.edu.ar.DAOImpl.ParqueoDAOImpl;
 import frgp.utn.edu.ar.DAOImpl.UsuarioDAOImpl;
 import frgp.utn.edu.ar.entidades.Parqueo;
+import frgp.utn.edu.ar.entidades.ParqueoAdapter;
 import frgp.utn.edu.ar.negocio.IParqueoNegocio;
 import frgp.utn.edu.ar.negocioImpl.ParqueoNegocio;
 
 public class ParqueosActivity extends AppCompatActivity {
 
     private Button addParqueo;
-    String user;
-    TextView tvUserName;
-    IParqueoNegocio ParNeg = new ParqueoNegocio();
+    private String user;
+    private TextView tvUserName;
+    private IParqueoNegocio ParNeg = new ParqueoNegocio();
     private List<String> parqueos = new ArrayList<>();
 
-    private ListView lvParqueos;
+    private GridView gvParqueos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class ParqueosActivity extends AppCompatActivity {
         tvUserName = (TextView) findViewById(R.id.textUserParqueos);
         String userName = getIntent().getStringExtra("userName");
         user = userName;
-        tvUserName.setText(userName);
+        tvUserName.setText("Parqueos de " + userName);
         listarParqueos();
         addParqueo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { showCustomDialog();
@@ -109,33 +111,23 @@ public class ParqueosActivity extends AppCompatActivity {
     private void listarParqueos(){
 
         parqueos.clear();
-        lvParqueos = (ListView)findViewById(R.id.lvParqueos);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, parqueos);
-        lvParqueos.setAdapter(adapter);
 
-        List<Parqueo> listado = ParNeg.listarParqueosPorUser(this, user);
-        //show in console
-        Log.i("User", "Parqueos del usuario: " + user);
+        List<Parqueo> listado = ParNeg.listarParqueos(this);
 
         if(listado!=null) {
             for (Parqueo park : listado) {
                 Log.i("Parqueo " + park.getId(), "Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo() + " Minutos");
-            }
-        } else{
-            Log.i("Parqueo ", "No tienes parqueos guardados.");
-        }
-
-        if(listado!=null) {
-            for (Parqueo park : listado) {
                 parqueos.add("Patente: " + park.getPatente() + " | Tiempo: " + park.getTiempo()+ " Minutos");
             }
         } else{
+            Log.i("Parqueo ", "No tienes parqueos guardados.");
             parqueos.add("No tienes parqueos guardados.");
         }
 
-        lvParqueos = (ListView)findViewById(R.id.lvParqueos);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, parqueos);
-        lvParqueos.setAdapter(adapter2);
+        ParqueoAdapter adapter = new ParqueoAdapter(this,listado);
+        gvParqueos = (GridView) findViewById(R.id.gvParqueos);
+        gvParqueos.setAdapter(adapter);
+
     }
 
     private void buscarParqueo(String patente){

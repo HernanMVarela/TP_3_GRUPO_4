@@ -3,14 +3,14 @@
     style="@style/ThemeOverlay.AppCompat.Dark"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="@color/colorPrimary"
+    android:background="@color/material_dynamic_primary50"
     android:orientation="vertical"
     android:padding="10dp">
 
 
     <TextView
-        style="@style/TextAppearance.AppCompat.Body1"
         android:id="@+id/textUser"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -20,8 +20,8 @@
         android:textSize="30sp" />
 
     <TextView
-        style="@style/TextAppearance.AppCompat.Body1"
         android:id="@+id/textMail"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
