@@ -16,9 +16,6 @@
             android:name=".ParqueosActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivity"
-            android:exported="false" />
-        <activity
             android:name=".HomeActivity"
             android:exported="true" />
         <activity
