@@ -10,6 +10,7 @@ public interface IParqueoNegocio {
     public boolean guardarParqueo(Context context, Parqueo nuevo);
     public Parqueo cargarParqueo(Context context, int id);
     public Parqueo buscarPorPatente(Context context, String patente);
+    public Parqueo buscarPorId(Context context, int id);
     public boolean existePatente(Context context, String patente);
     public List<Parqueo> listarParqueos(Context context);
     public List<Parqueo> listarParqueosPorUser(Context context, String user);

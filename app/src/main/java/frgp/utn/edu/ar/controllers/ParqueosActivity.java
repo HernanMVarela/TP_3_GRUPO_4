@@ -80,7 +80,7 @@ public class ParqueosActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!matricula.getText().toString().isEmpty() && !tiempo.getText().toString().isEmpty())
                 {
-                    Parqueo parq = new Parqueo(matricula.getText().toString(),Integer.parseInt(tiempo.getText().toString()), Calendar.getInstance().getTime(), user);
+                    Parqueo parq = new Parqueo(matricula.getText().toString(),Integer.parseInt(tiempo.getText().toString()), Calendar.getInstance().getTime(), user, true);
                     if(escribirDB(parq))
                     {
                         Toast.makeText(ParqueosActivity.this, "Registrado", Toast.LENGTH_LONG).show();

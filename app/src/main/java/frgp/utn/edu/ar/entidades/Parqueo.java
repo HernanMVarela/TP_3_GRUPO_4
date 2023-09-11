@@ -10,6 +10,7 @@ public class Parqueo {
     private int tiempo;
     private Date ingreso;
     private String user;
+    private boolean estado;
 
     public Parqueo() {
     }
@@ -22,11 +23,12 @@ public class Parqueo {
         this.user = user;
     }
 
-    public Parqueo(String patente, int minutos, Date ingreso, String user) {
+    public Parqueo(String patente, int minutos, Date ingreso, String user, boolean estado) {
         this.patente = patente;
         this.tiempo = minutos;
         this.ingreso = ingreso;
         this.user = user;
+        this.estado = estado;
     }
 
     @Override
@@ -78,4 +80,12 @@ public class Parqueo {
     public void setUser(String user) {
         this.user = user;
     }
+
+    public boolean getEstado() {
+            return estado;
+    }
+    public void setEstado(boolean estado) {
+            this.estado = estado;
+    }
+
 }

@@ -26,6 +26,11 @@ public class ParqueoNegocio implements IParqueoNegocio {
     }
 
     @Override
+    public Parqueo buscarPorId(Context context, int id) {
+        return ParDao.obtenerParqueoPorId(context, id);
+    }
+
+    @Override
     public boolean existePatente(Context context, String patente) {
         return false;
     }
@@ -42,6 +47,6 @@ public class ParqueoNegocio implements IParqueoNegocio {
 
     @Override
     public boolean eliminarParqueo(Context context, Parqueo eliminar) {
-        return false;
+        return ParDao.eliminarParqueo(context, eliminar);
     }
 }

@@ -31,6 +31,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
             parqueo.put("TIEMPO", nuevo.getTiempo());
             parqueo.put("INGRESO", dateFormat.format(nuevo.getIngreso()));
             parqueo.put("USER", nuevo.getUser());
+            parqueo.put("ESTADO", nuevo.getEstado());
             DB.insertDB("parqueos",parqueo);
             DB.closeDB();
             return true;
@@ -105,7 +106,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
             DB.openDB();
             SQLiteDatabase base = DB.getWritableDatabase();
             Calendar fechaActual = Calendar.getInstance();
-            Cursor fila = base.rawQuery("SELECT * FROM parqueos WHERE USER =?;", new String [] {user});
+            Cursor fila = base.rawQuery("SELECT * FROM parqueos WHERE USER =? AND ESTADO = 1;", new String [] {user});
             if (fila.moveToFirst()) {
                 do {
                     // Recupera la fecha de ingreso como cadena desde la base de datos
@@ -177,6 +178,56 @@ public class ParqueoDAOImpl implements ParqueoDAO {
         }catch (Exception e){
             DB.closeDB();
             return null;
+        }
+    }
+
+    @Override
+    public Parqueo obtenerParqueoPorId(Context context, int id) {
+        Parqueo buscado = new Parqueo();
+        try {
+            DB = new OpenHelper( context, "tp3g4",null,1);
+            DB.openDB();
+            SQLiteDatabase base = DB.getWritableDatabase();
+            Cursor fila = base.rawQuery("SELECT * FROM parqueos WHERE ID =?", new String [] {String.valueOf(id)});
+            if (fila.moveToFirst()) {
+
+                String fechaStr = fila.getString(3);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                java.util.Date fecha = dateFormat.parse(fechaStr);
+
+                buscado.setId(fila.getInt(0));
+                buscado.setPatente(fila.getString(1));
+                buscado.setTiempo(fila.getInt(2));
+                buscado.setIngreso(fecha);
+                buscado.setUser(fila.getString(4));
+                DB.closeDB();
+                return buscado;
+            }else {
+                DB.closeDB();
+                return null;
+            }
+        }catch (Exception e){
+            DB.closeDB();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean eliminarParqueo(Context context, Parqueo parqueo) {
+        int id = parqueo.getId();
+        try {
+            DB = new OpenHelper( context, "tp3g4",null,1);
+            DB.openDB();
+            SQLiteDatabase base = DB.getWritableDatabase();
+            ContentValues parqueoUpdate = new ContentValues();
+            parqueoUpdate.put("ESTADO", 0);
+            base.update("parqueos", parqueoUpdate, "ID = ?", new String[]{String.valueOf(id)});
+            DB.closeDB();
+            return true;
+        }catch (Exception e){
+            DB.closeDB();
+            return false;
         }
     }
 }

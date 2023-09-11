@@ -13,4 +13,6 @@ public interface ParqueoDAO {
     public List<Parqueo> listarParqueosPorUser(Context context, String user);
 
     public Parqueo obtenerParqueo(Context context, String patente);
+    public Parqueo obtenerParqueoPorId(Context context, int id);
+    public boolean eliminarParqueo(Context context, Parqueo parqueo);
 }
