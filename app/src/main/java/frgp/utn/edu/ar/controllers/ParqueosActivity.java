@@ -32,6 +32,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import frgp.utn.edu.ar.DAO.ParqueoDAO;
 import frgp.utn.edu.ar.DAOImpl.ParqueoDAOImpl;
@@ -51,7 +52,6 @@ public class ParqueosActivity extends AppCompatActivity {
     private TextView tvUserName,tvEmail, textUserParqueos;
     private IParqueoNegocio ParNeg = new ParqueoNegocio();
     private List<String> parqueos = new ArrayList<>();
-
     private GridView gvParqueos;
 
     @Override
@@ -138,30 +138,47 @@ public class ParqueosActivity extends AppCompatActivity {
         registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!matricula.getText().toString().isEmpty() && !tiempo.getText().toString().isEmpty())
+
+                /// CHEQUEO DE LOS CAMPOS DE TEXTO
+                if(matricula.getText().toString().isEmpty() && tiempo.getText().toString().isEmpty())
                 {
-                    Parqueo parq = new Parqueo(matricula.getText().toString(),Integer.parseInt(tiempo.getText().toString()), Calendar.getInstance().getTime(), user, true);
-                    if(escribirDB(parq))
-                    {
-                        Toast.makeText(ParqueosActivity.this, "Registrado", Toast.LENGTH_LONG).show();
-                        listarParqueos();
-                    }
-                    else
-                    {
-                        Toast.makeText(ParqueosActivity.this, "Error", Toast.LENGTH_LONG).show();
-                    }
-                }
-                else {
                     Toast.makeText(ParqueosActivity.this, "Debe completar todos los campos", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    return;
+                }
+
+                /// CHEQUEO DE FORMATO DE LA PATENTE
+                String patenteRegex = "^[A-Z]{3}\\d{3}$|^[A-Z]{2}\\d{3}[A-Z]{2}$";
+                String patente = matricula.getText().toString().toUpperCase();
+                if(!Pattern.matches(patenteRegex, patente)){
+                    Toast.makeText(ParqueosActivity.this, "Patente no válida", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    return;
+                }
+
+                /// CHEQUEO DEL VALOR EN MINUTOS
+                int minutos = Integer.parseInt(tiempo.getText().toString());
+                if(minutos<=1 || minutos >1440){
+                    Toast.makeText(ParqueosActivity.this, "Tiempo inválido", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    return;
+                }
+
+                /// SE CARGA PARQUEO EN DB
+                Parqueo parq = new Parqueo(patente, minutos, Calendar.getInstance().getTime(), user, true);
+                if(escribirDB(parq))
+                {
+                    Toast.makeText(ParqueosActivity.this, "Registrado", Toast.LENGTH_LONG).show();
+                    listarParqueos();
+                }
+                else
+                {
+                    Toast.makeText(ParqueosActivity.this, "Error", Toast.LENGTH_LONG).show();
                 }
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
-
-
     }
 
     private boolean escribirDB(Parqueo nuevo){

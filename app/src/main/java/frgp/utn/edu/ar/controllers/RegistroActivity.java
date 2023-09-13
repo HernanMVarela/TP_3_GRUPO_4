@@ -34,18 +34,22 @@ public class RegistroActivity extends AppCompatActivity {
 
     public Boolean Registrar(View view){
 
+        if(etUser.getText().toString().isEmpty()
+        || etCorreo.getText().toString().isEmpty()
+        || etPassword1.getText().toString().isEmpty()
+        || etPassword2.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
         String userName = etUser.getText().toString();
         ///validate that userName doesnt contain whitespaces
         if(userName.contains(" ")){
             Toast.makeText(this, "El nombre de usuario no puede contener espacios", Toast.LENGTH_LONG).show();
             return false;
         }
-
-        if(etUser.getText().toString().isEmpty()
-        || etCorreo.getText().toString().isEmpty()
-        || etPassword1.getText().toString().isEmpty()
-        || etPassword2.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_LONG).show();
+        if(userName.length() < 6){
+            Toast.makeText(this, "El nombre de usuario debe tener al menos 6 caracteres", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -84,7 +88,6 @@ public class RegistroActivity extends AppCompatActivity {
             Toast.makeText(this, "Error al crear usuario", Toast.LENGTH_LONG).show();
         }
     }
-
 
     public boolean checkUserName(View view){
         String userName = etUser.getText().toString();
