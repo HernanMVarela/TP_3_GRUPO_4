@@ -189,7 +189,7 @@ public class ParqueosActivity extends AppCompatActivity {
 
         parqueos.clear();
 
-        List<Parqueo> listado = ParNeg.listarParqueos(this);
+        List<Parqueo> listado = ParNeg.listarParqueosPorUser(this, user);
 
         if(listado!=null) {
             for (Parqueo park : listado) {

@@ -73,7 +73,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             DB = new OpenHelper(context, "tp3g4", null, 1);
             DB.openDB();
             SQLiteDatabase base = DB.getWritableDatabase();
-            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE Username =?", new String [] {username});
+            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE USERNAME =?", new String [] {username});
             if (fila.moveToFirst()) {
 
                     Usuario user = new Usuario(
@@ -85,6 +85,37 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                     fila.close();
                     DB.closeDB();
                     return user;
+
+            } else {
+                fila.close();
+                DB.closeDB();
+                return null;
+            }
+        }
+        catch (Exception e) {
+            DB.closeDB();
+            return null;
+        }
+    }
+
+    @Override
+    public Usuario existeCorreo(Context context, String mail) {
+        try {
+            DB = new OpenHelper(context, "tp3g4", null, 1);
+            DB.openDB();
+            SQLiteDatabase base = DB.getWritableDatabase();
+            Cursor fila = base.rawQuery("SELECT * FROM usuarios WHERE CORREO =?", new String [] {mail});
+            if (fila.moveToFirst()) {
+
+                Usuario user = new Usuario(
+                        fila.getInt(0),
+                        fila.getString(1),
+                        fila.getString(2),
+                        fila.getString(3),
+                        new EstadoUsuario(fila.getInt(3), ""));
+                fila.close();
+                DB.closeDB();
+                return user;
 
             } else {
                 fila.close();

@@ -72,6 +72,10 @@ public class RegistroActivity extends AppCompatActivity {
             return false;
         }
 
+        if(!checkMail(view)){
+            return false;
+        }
+
         escribir(etUser.getText().toString(),etPassword1.getText().toString(),etCorreo.getText().toString());
         return true;
     }
@@ -91,14 +95,24 @@ public class RegistroActivity extends AppCompatActivity {
 
     public boolean checkUserName(View view){
         String userName = etUser.getText().toString();
+        String mail = etCorreo.getText().toString();
         if(UserNeg.existeUsuario(this, userName)){
-            Toast.makeText(this, "El nombre de usuario ya existe", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Nombre de usuario ya existente", Toast.LENGTH_LONG).show();
             return false;
         }else{
             return true;
         }
     }
 
+    public boolean checkMail(View view){
+        String mail = etCorreo.getText().toString();
+        if(UserNeg.existeCorreo(this, mail)){
+            Toast.makeText(this, "Correo ya registrado", Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
     public void leerUsuario(View view){
         List<Usuario> lista = UserNeg.listarUsuarios(this);
 

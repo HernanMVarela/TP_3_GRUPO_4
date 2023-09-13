@@ -46,6 +46,14 @@ public class UsuarioNegocio implements IUsuarioNegocio {
     }
 
     @Override
+    public boolean existeCorreo(Context context, String mail) {
+        if(UserDao.existeCorreo(context,mail) != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    @Override
     public boolean borrarUsuario(Context context, Usuario Eliminar) {
         return false;
     }
