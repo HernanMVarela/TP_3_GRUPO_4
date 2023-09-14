@@ -13,6 +13,9 @@ public class ParqueoNegocio implements IParqueoNegocio {
     ParqueoDAO ParDao = new ParqueoDAOImpl();
     @Override
     public boolean guardarParqueo(Context context, Parqueo nuevo) {
+        if(existePatente(context, nuevo.getPatente())){
+            return false;
+        }
         return ParDao.insertarParqueo(context, nuevo);
     }
     @Override
@@ -32,7 +35,7 @@ public class ParqueoNegocio implements IParqueoNegocio {
 
     @Override
     public boolean existePatente(Context context, String patente) {
-        return false;
+        return ParDao.existeParqueo(context, patente);
     }
 
     @Override

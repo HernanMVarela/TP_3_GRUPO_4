@@ -45,7 +45,47 @@ public class ParqueoDAOImpl implements ParqueoDAO {
 
     @Override
     public boolean existeParqueo(Context context, String patente) {
-        return false;
+        try {
+            DB = new OpenHelper( context, "tp3g4",null,1);
+            DB.openDB();
+            SQLiteDatabase base = DB.getWritableDatabase();
+            Calendar fechaActual = Calendar.getInstance();
+
+            Cursor fila = base.rawQuery("SELECT * FROM parqueos WHERE PATENTE =? ORDER BY ID DESC", new String [] {patente});
+            if (fila.moveToFirst()) {
+
+                // Recupera la fecha de ingreso como cadena desde la base de datos
+                String fechaStr = fila.getString(3);
+
+                // Convierte la cadena de fecha nuevamente a java.util.Date
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                Date fechaIngreso = dateFormat.parse(fechaStr);
+
+                // Convierte la fecha de ingreso a Calendar
+                Calendar calendarIngreso = Calendar.getInstance();
+                calendarIngreso.setTime(fechaIngreso);
+
+                // Obtiene el valor de "tiempo" desde la fila
+                int tiempo = fila.getInt(2);
+
+                // Suma el tiempo en minutos a la fecha de ingreso
+                calendarIngreso.add(Calendar.MINUTE, tiempo);
+
+                // Compara la fecha calculada con la fecha actual
+                if (calendarIngreso.after(fechaActual) && patente.equals(fila.getString(1))) {
+
+                    fila.close();
+                    DB.closeDB();
+                    return true;
+                }
+            }
+            fila.close();
+            DB.closeDB();
+            return false;
+        }catch (Exception e){
+            DB.closeDB();
+            return false;
+        }
     }
 
     @Override
@@ -116,7 +156,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
                     String fechaStr = fila.getString(3);
 
                     // Convierte la cadena de fecha nuevamente a java.util.Date
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                     Date fechaIngreso = dateFormat.parse(fechaStr);
 
                     // Convierte la fecha de ingreso a Calendar
@@ -166,7 +206,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
 
                 String fechaStr = fila.getString(3);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                 java.util.Date fecha = dateFormat.parse(fechaStr);
 
                 buscado.setId(fila.getInt(0));
@@ -200,7 +240,7 @@ public class ParqueoDAOImpl implements ParqueoDAO {
 
                 String fechaStr = fila.getString(3);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                 java.util.Date fecha = dateFormat.parse(fechaStr);
 
                 buscado.setId(fila.getInt(0));

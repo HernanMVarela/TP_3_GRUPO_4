@@ -173,7 +173,7 @@ public class ParqueosActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(ParqueosActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ParqueosActivity.this, "El vehículo ya está registrado", Toast.LENGTH_LONG).show();
                 }
                 dialog.dismiss();
             }
